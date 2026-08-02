@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 def interactiveOn():
     plt.ion()
 
-def plot(x: list[float], y: list[float], xlabel: str, ylabel: str, title: str):
+def plot(x: list[float], y: list[float], xlabel: str = 'x', ylabel: str = 'y', title: str = "Title"):
     fig, ax = plt.subplots()
     ax.plot(x,y)
     ax.set(xlabel= xlabel, ylabel= ylabel,
