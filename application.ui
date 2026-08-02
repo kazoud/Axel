@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Axel</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>20</y>
+      <width>651</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>2</number>
+    </property>
+    <widget class="QWidget" name="menuPage">
+     <widget class="QPushButton" name="NeuronModels">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>40</y>
+        <width>161</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>21</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Neuron Models</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="neuronModelsPage">
+     <widget class="QPushButton" name="LIF">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>241</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Leaky Integrate-and-Fire</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="LIFpage">
+     <widget class="QDoubleSpinBox" name="vRest">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>20</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>-200.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>-70.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="vRestLabel">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>20</y>
+        <width>121</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Voltage at rest (mV):</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="vThresholdLabel">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>50</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Threshold voltage (mV):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="vThreshold">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>50</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>-200.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>-54.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="vResetLabel">
+      <property name="geometry">
+       <rect>
+        <x>75</x>
+        <y>80</y>
+        <width>121</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Reset voltage (mV):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="vReset">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>80</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>-200.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>-80.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="rLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Membrane resistance (Mohm):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="r">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>110</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>-200.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="tauLabel">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>140</y>
+        <width>121</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Time constant (ms):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="tau">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>140</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>999.899999999999977</double>
+      </property>
+      <property name="value">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="currentLabel">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>170</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Electrode current (nA):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="current">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>170</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="specialValueText">
+       <string/>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>-200.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>999.899999999999977</double>
+      </property>
+      <property name="value">
+       <double>3.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="durationLabel">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>200</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Simulation duration (ms):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="duration">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>200</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="specialValueText">
+       <string/>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>99999.899999999994179</double>
+      </property>
+      <property name="value">
+       <double>500.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="SimulationButton">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>280</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Begin Simulation</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="timeStepLabel">
+      <property name="geometry">
+       <rect>
+        <x>97</x>
+        <y>230</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Time step (ms):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="timeStep">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>230</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="specialValueText">
+       <string/>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+      <property name="value">
+       <double>0.100000000000000</double>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>37</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
