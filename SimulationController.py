@@ -10,7 +10,7 @@ class Inputs:
     r: float
     tau:float
     duration:float
-    current:float
+    current:str
     timeStep:float
 
 @dataclass
@@ -36,17 +36,19 @@ class SimulationController():
         interspikeRateAnalysis = True
         inputs = self.__extractInputs(widget)
 
-        xVoltage, yVoltage, xCurrent, yCurrent = leakyIntegrateFire.leakyIntegrateAndFire(inputs.vRest,
-                                                                                          inputs.vThreshold,
-                                                                                          inputs.vReset,
-                                                                                          inputs.r,
-                                                                                          inputs.tau,
-                                                                                          inputs.duration,
-                                                                                          inputs.timeStep,
-                                                                                          inputs.current)
+        timeValues, currentValues = leakyIntegrateFire.parseCurrent(current=inputs.current, duration=inputs.duration, timeStep=inputs.timeStep)
+
+        xVoltage, yVoltage = leakyIntegrateFire.leakyIntegrateAndFire(inputs.vRest,
+                                                                    inputs.vThreshold,
+                                                                    inputs.vReset,
+                                                                    inputs.r,
+                                                                    inputs.tau,
+                                                                    inputs.duration,
+                                                                    inputs.timeStep,
+                                                                    currentValues)
 
         plotElements.append(PlotElement(xVoltage, yVoltage, voltageXlabel, voltageYlabel, voltageTitle))
-        plotElements.append(PlotElement(xCurrent, yCurrent, currentXlabel, currentYLabel, currentTitle))
+        plotElements.append(PlotElement(timeValues, currentValues, currentXlabel, currentYLabel, currentTitle))
 
         if (interspikeRateAnalysis):
                 xInterspike, yInterspike = leakyIntegrateFire.interspikeIntervalRate(inputs.r, inputs.vRest, inputs.vThreshold, inputs.vReset, inputs.tau, linear = False)
@@ -61,7 +63,7 @@ class SimulationController():
         r = widget.r.value()
         tau = widget.tau.value()
         duration = widget.duration.value()
-        current = widget.current.value()
+        current = widget.current.toPlainText()
         timeStep = widget.timeStep.value()
 
         return Inputs(vRest,vThreshold, vReset, r, tau, duration, current, timeStep)

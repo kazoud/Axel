@@ -16,6 +16,8 @@ class nodeType(Enum):
     identifier = auto()
     sin = auto()
     cos = auto()
+    exponent = auto()
+    pi = auto()
 
 def isDigit(c) ->bool:
     return c >= '0' and c <= '9'
@@ -28,7 +30,8 @@ class Tokenizer():
         '/' : nodeType.divided,
         '(': nodeType.openParenthesis,
         ')': nodeType.closedParenthesis,
-        't': nodeType.identifier
+        't': nodeType.identifier,
+        '^': nodeType.exponent
     }
 
     def __init__(self, input : str):
@@ -87,6 +90,14 @@ class Tokenizer():
         elif c == 'c':
             self.processCos()
 
+    def processPi(self):
+        c = self.getCurrentChar()
+        if c == 'p':
+            self.advance()
+            if self.getCurrentChar() == 'i':
+                self.advance()
+                self.tokens.append((nodeType.pi, "pi"))
+
     def tokenize(self)->list[tuple[nodeType,Any]]:
         self.tokens = []
         while self.current <len(self.input):
@@ -97,8 +108,10 @@ class Tokenizer():
 
             elif isDigit(c):
                 self.processNumber()
-            else:
+            elif c == 's' or c == 'c':
                 self.processFunctions()
+            else:
+                self.processPi()
 
         return self.tokens
 
@@ -138,14 +151,14 @@ class Number(Expression):
         return self.value
 
 class Identifier(Expression):
-    def __init__(self):
-        self.values = np.linspace(0, 5, 1000)
+    def __init__(self, timeValues: list[float]):
+        self.timeValues = timeValues
         self.current = 0
         
     @override
     def evaluate(self):
-        if self.current < len(self.values):
-            value = self.values[self.current]
+        if self.current < len(self.timeValues):
+            value = self.timeValues[self.current]
             self.current +=1
             return value
         return -1
@@ -174,9 +187,35 @@ class Cos(Expression):
     def evaluate(self):
         return math.cos(self.value.evaluate())
 
+class UnaryMinus(Expression):
+    def __init__(self, value):
+        self.value = value
+
+    @override
+    def evaluate(self):
+        return -1.0 * self.value.evaluate()
+
+class Exponent(Expression):
+    def __init__(self, base, power):
+        self.base = base
+        self.power = power
+
+    @override
+    def evaluate(self):
+        return math.pow(self.base.evaluate(), self.power.evaluate())
+
+class Pi(Expression):
+    def __init__(self):
+        pass
+
+    @override
+    def evaluate(self):
+        return math.pi
+    
 class Parser:
-    def __init__(self, tokens: list[tuple[nodeType, str]]):
+    def __init__(self, tokens: list[tuple[nodeType, str]], timeValues: list[float]):
         self.tokens = tokens
+        self.timeValues = timeValues
         self.current = 0
 
     def endOfInput(self)->bool:
@@ -213,7 +252,7 @@ class Parser:
     def parse(self)->Expression:
         return self.expression()
 
-    def expression(self) ->Expression:
+    def expression(self)->Expression:
         expr = self.factor()
 
         while self.match([nodeType.plus,nodeType.minus]):
@@ -224,20 +263,33 @@ class Parser:
         return expr
 
     def factor(self)->Expression:
-        expr = self.primary()
+        expr = self.unary()
 
         while self.match([nodeType.times,nodeType.divided]):
             operator = self.previous()
-            right = self.primary()
+            right = self.unary()
             expr = BinaryOperation(expr, operator, right)
 
+        return expr
+
+    def unary(self)->Expression:
+        if self.match([nodeType.minus]):
+            expr = self.unary()
+            return UnaryMinus(expr)
+        return self.exponent()
+
+    def exponent(self)->Expression:
+        expr = self.primary()
+        if self.match([nodeType.exponent]):
+            power = self.primary()
+            return Exponent(expr, power)
         return expr
 
     def primary(self)->Expression:
         if self.match([nodeType.number]):
             return Number(float(self.previous()[1]))
         if self.match([nodeType.identifier]):
-            return Identifier()
+            return Identifier(self.timeValues)
         if self.match([nodeType.openParenthesis]):
             expr = self.expression()
             self.consume(nodeType.closedParenthesis, "Expected ')' after expression.");
@@ -252,22 +304,20 @@ class Parser:
             expr = self.expression()
             self.consume(nodeType.closedParenthesis, "Expected ')' after expression")
             return Cos(expr)
+        if self.match([nodeType.pi]):
+            return Pi()
 
-
-def parseEquation(input : str):
+def parseExpression(input : str, timeValues: list[float])->list[float]:
     tokenizer = Tokenizer(input)
     tokens = tokenizer.tokenize()
-    parser = Parser(tokens)
+    parser = Parser(tokens, timeValues)
     tree = parser.parse()
-    #can add a function that takes the range of the identifier as input, traverses the whole tree, finds the identifier nodes and sets the range
     values = []
-    x = []
-    for i in range(1000):
-        x.append(i)
+    for i in range(len(timeValues)):
         values.append(tree.evaluate())
-
-    plotting.plot(x, values)
+    return values
 
 
 if __name__ == "__main__":
-    parseEquation("3*cos(3*t)")
+    parseExpression("-3*cos(3*t)")
+    parseExpression("4*sin(0.4*t*6.28)^2")

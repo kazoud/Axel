@@ -1,26 +1,28 @@
 import math
 import numpy as np
+import expressionParser
 
-def leakyIntegrateAndFire(vRest: float, vThreshold: float, vReset, r: float, tau: float, milliseconds: float, timeStep: float, current:float)-> tuple[list[float], list[float]]:
+def parseCurrent(current: str, duration: float, timeStep: float)->tuple[list[float], list[float]]:
+    steps = math.floor(duration/timeStep)
+    timeValues = np.linspace(0, duration, steps)
+    currentValues = expressionParser.parseExpression(input = current, timeValues = timeValues)
+    return (timeValues,currentValues)
+
+def leakyIntegrateAndFire(vRest: float, vThreshold: float, vReset, r: float, tau: float, milliseconds: float, timeStep: float, currentValues:list[float])-> tuple[list[float], list[float]]:
     steps = math.floor(milliseconds/timeStep)
-    intSteps = math.floor
-    currents = [current] * steps
-    # currents = [0] * math.floor(steps*0.2)
-    # currents.extend(4*math.pow(math.sin(0.4*i*2*math.pi/1000),2) for i in range(math.floor(steps*0.6)))
-    # currents.extend([0]*math.floor(steps*0.2))
-    #keep those for when you can customize the current input
     model = lambda voltage, current : vReset + r*current + (voltage - (vReset + r*current))*math.exp(-timeStep/tau)
     voltages = [vRest]
     for i in range(steps):
-        value = model(voltages[-1],currents[i])
+        value = model(voltages[-1],currentValues[i])
         if (value > vThreshold): #fire an action potential
             voltages.append(0)
             value = vReset
         voltages.append(value)
 
-    voltageTimeValues = timeStep*np.arange(len(voltages))
-    currentTimeValues = timeStep*np.arange(len(currents))
-    return [voltageTimeValues, voltages, currentTimeValues,currents]
+    voltageTimeValues = timeStep*np.arange(len(voltages)) #Technically, doing this distorts time slightly because we don't have t values for the action potential. 
+                                                          #This is due to the limitations of the model. 
+                                                          #In practice, we could measure the duration of an action potential and adapt the code accordingly
+    return [voltageTimeValues, voltages]
 
 def __computeInterspikeIntervalRate(current:float, r:float, vRest: float, vThreshold: float, vReset: float, tau: float, linear: bool)->float:
     if (linear):
