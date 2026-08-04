@@ -8,15 +8,21 @@ def parseCurrent(current: str, duration: float, timeStep: float)->tuple[list[flo
     currentValues = expressionParser.parseExpression(input = current, timeValues = timeValues)
     return (timeValues,currentValues)
 
-def leakyIntegrateAndFire(vRest: float, vThreshold: float, vReset, r: float, tau: float, milliseconds: float, timeStep: float, currentValues:list[float])-> tuple[list[float], list[float]]:
+def leakyIntegrateAndFire(vRest: float, vThreshold: float, vReset, rMembrane: float, tau: float, milliseconds: float, timeStep: float, currentValues:list[float], spikeRateAdaptation:bool, potassiumVrest:float, conductanceIncrement:float, potassiumTau:float)-> tuple[list[float], list[float]]:
     steps = math.floor(milliseconds/timeStep)
-    model = lambda voltage, current : vReset + r*current + (voltage - (vReset + r*current))*math.exp(-timeStep/tau)
+    if not spikeRateAdaptation:
+        potassiumVrest = 0
+    model = lambda voltage, current, rg : (vReset + rMembrane*current +rg*potassiumVrest)/(1+rg) + (voltage - (vReset + rMembrane*current+rg*potassiumVrest)/(1+rg))*math.exp(-timeStep*(1+rg)/tau)
     voltages = [vRest]
+    sraConductances = [0]
     for i in range(steps):
-        value = model(voltages[-1],currentValues[i])
+        value = model(voltages[-1],currentValues[i], sraConductances[i])
+        sraConductances.append(sraConductances[-1]*math.exp(-timeStep/potassiumTau))
         if (value > vThreshold): #fire an action potential
             voltages.append(0)
             value = vReset
+            if spikeRateAdaptation:
+                sraConductances.append(sraConductances[-1] + conductanceIncrement)
         voltages.append(value)
 
     voltageTimeValues = timeStep*np.arange(len(voltages)) #Technically, doing this distorts time slightly because we don't have t values for the action potential. 

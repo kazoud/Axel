@@ -12,6 +12,10 @@ class Inputs:
     duration:float
     current:str
     timeStep:float
+    spikeRateAdaptation:bool
+    potassiumVrest:float
+    potassiumConductanceIncrement:float
+    potassiumTau:float
 
 @dataclass
 class PlotElement:
@@ -45,7 +49,11 @@ class SimulationController():
                                                                     inputs.tau,
                                                                     inputs.duration,
                                                                     inputs.timeStep,
-                                                                    currentValues)
+                                                                    currentValues,
+                                                                    inputs.spikeRateAdaptation,
+                                                                    inputs.potassiumVrest,
+                                                                    inputs.potassiumConductanceIncrement,
+                                                                    inputs.potassiumTau)
 
         plotElements.append(PlotElement(xVoltage, yVoltage, voltageXlabel, voltageYlabel, voltageTitle))
         plotElements.append(PlotElement(timeValues, currentValues, currentXlabel, currentYLabel, currentTitle))
@@ -65,6 +73,10 @@ class SimulationController():
         duration = widget.duration.value()
         current = widget.current.toPlainText()
         timeStep = widget.timeStep.value()
+        spikeRateAdaptation = widget.spikeRateAdaptation.isChecked()
+        potassiumVrest = widget.potassiumVrest.value()
+        potassiumConductanceIncrement = widget.potassiumConductance.value()
+        potassiumTau = widget.potassiumTau.value()
 
-        return Inputs(vRest,vThreshold, vReset, r, tau, duration, current, timeStep)
+        return Inputs(vRest,vThreshold, vReset, r, tau, duration, current, timeStep, spikeRateAdaptation, potassiumVrest, potassiumConductanceIncrement, potassiumTau)
 

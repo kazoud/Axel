@@ -19,9 +19,21 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.LIF.clicked.connect(self.IncrementStackedWidget)
             self.ui.SimulationButton.clicked.connect(self.runSimulation)
 
+            self.ui.spikeRateAdaptation.clicked.connect(self.ToggleSpikeRateAdaptation)
+
     @QtCore.Slot()
     def IncrementStackedWidget(self):
         self.ui.stackedWidget.setCurrentIndex(self.ui.stackedWidget.currentIndex()+1)
+    @QtCore.Slot()
+    def ToggleSpikeRateAdaptation(self):
+        checked = self.ui.spikeRateAdaptation.isChecked()
+        self.ui.potassiumVrest.setEnabled(checked)
+        self.ui.potassiumVrestLabel.setEnabled(checked)
+        self.ui.potassiumConductance.setEnabled(checked)
+        self.ui.potassiumConductanceLabel.setEnabled(checked)
+        self.ui.potassiumTau.setEnabled(checked)
+        self.ui.potassiumTauLabel.setEnabled(checked)
+
     @QtCore.Slot()
     def runSimulation(self):
         match self.ui.stackedWidget.currentIndex():
