@@ -14,15 +14,18 @@ def leakyIntegrateAndFire(vRest: float, vThreshold: float, vReset, rMembrane: fl
         potassiumVrest = 0
     model = lambda voltage, current, rg : (vReset + rMembrane*current +rg*potassiumVrest)/(1+rg) + (voltage - (vReset + rMembrane*current+rg*potassiumVrest)/(1+rg))*math.exp(-timeStep*(1+rg)/tau)
     voltages = [vRest]
-    sraConductances = [0]
+    rgValues = [0]
+    currentRg = 0
     for i in range(steps):
-        value = model(voltages[-1],currentValues[i], sraConductances[i])
-        sraConductances.append(sraConductances[-1]*math.exp(-timeStep/potassiumTau))
-        if (value > vThreshold): #fire an action potential
+        value = model(voltages[-1],currentValues[i], rgValues[-1])
+        currentRg = rgValues[-1]*math.exp(-timeStep/potassiumTau)
+        if (value >= vThreshold): #fire an action potential
             voltages.append(0)
             value = vReset
             if spikeRateAdaptation:
-                sraConductances.append(sraConductances[-1] + conductanceIncrement)
+                currentRg += conductanceIncrement
+
+        rgValues.append(currentRg)
         voltages.append(value)
 
     voltageTimeValues = timeStep*np.arange(len(voltages)) #Technically, doing this distorts time slightly because we don't have t values for the action potential. 
