@@ -37,7 +37,7 @@ class SimulationController():
         currentYLabel = "Current (nA)"
 
         plotElements = []
-        interspikeRateAnalysis = True
+        #interspikeRateAnalysis = True
         inputs = self.__extractInputs(widget)
 
         timeValues, currentValues = leakyIntegrateFire.parseCurrent(current=inputs.current, duration=inputs.duration, timeStep=inputs.timeStep)
@@ -58,9 +58,10 @@ class SimulationController():
         plotElements.append(PlotElement(xVoltage, yVoltage, voltageXlabel, voltageYlabel, voltageTitle))
         plotElements.append(PlotElement(timeValues, currentValues, currentXlabel, currentYLabel, currentTitle))
 
-        if (interspikeRateAnalysis):
-                xInterspike, yInterspike = leakyIntegrateFire.interspikeIntervalRate(inputs.r, inputs.vRest, inputs.vThreshold, inputs.vReset, inputs.tau, linear = False)
-                plotElements.append(PlotElement(xInterspike,yInterspike, "current (nA)", "Interspike Interval Rate (Hz)", ""))
+        #it works but it's cumbersome for now
+        # if (interspikeRateAnalysis):
+        #         xInterspike, yInterspike = leakyIntegrateFire.interspikeIntervalRate(inputs.r, inputs.vRest, inputs.vThreshold, inputs.vReset, inputs.tau, linear = False)
+        #         plotElements.append(PlotElement(xInterspike,yInterspike, "current (nA)", "Interspike Interval Rate (Hz)", ""))
 
         return plotElements
 
