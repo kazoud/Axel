@@ -1,6 +1,8 @@
 import math
 import numpy as np
 import expressionParser
+import numerical
+from typing import Callable
 
 def parseCurrent(current: str, duration: float, timeStep: float)->tuple[list[float], list[float]]:
     steps = math.floor(duration/timeStep)
@@ -12,21 +14,27 @@ def leakyIntegrateAndFire(vRest: float, vThreshold: float, vReset, rMembrane: fl
     steps = math.floor(milliseconds/timeStep)
     if not spikeRateAdaptation:
         potassiumVrest = 0
-    model = lambda voltage, current, rg : (vReset + rMembrane*current +rg*potassiumVrest)/(1+rg) + (voltage - (vReset + rMembrane*current+rg*potassiumVrest)/(1+rg))*math.exp(-timeStep*(1+rg)/tau)
+    dvdt = lambda voltage, rmgSra, current : (vReset + rMembrane*current +rmgSra*potassiumVrest -(voltage*(1+rmgSra))) /tau
     voltages = [vRest]
-    rgValues = [0]
-    currentRg = 0
-    for i in range(steps):
-        value = model(voltages[-1],currentValues[i], rgValues[-1])
-        currentRg = rgValues[-1]*math.exp(-timeStep/potassiumTau)
-        if (value >= vThreshold): #fire an action potential
-            voltages.append(0)
-            value = vReset
-            if spikeRateAdaptation:
-                currentRg += conductanceIncrement
+    drmgSradt = lambda rmgSra : -rmgSra/tau
+    rmgSraValues = [0]
 
-        rgValues.append(currentRg)
-        voltages.append(value)
+    for i in range(steps):
+        models = np.array([
+            lambda state : dvdt(state[0],state[1], currentValues[i]),
+            lambda state: drmgSradt(state[1])
+        ])
+        nextState = numerical.rungeKutta(np.array([voltages[-1], rmgSraValues[-1]]), timeStep, models)
+        voltage = nextState[0]
+        rmgSra = nextState[1]
+        if (voltage >= vThreshold): #fire an action potential
+            voltages.append(0)
+            voltage = vReset
+            if spikeRateAdaptation:
+                rmgSra += conductanceIncrement
+
+        rmgSraValues.append(rmgSra)
+        voltages.append(voltage)
 
     voltageTimeValues = timeStep*np.arange(len(voltages)) #Technically, doing this distorts time slightly because we don't have t values for the action potential. 
                                                           #This is due to the limitations of the model. 
