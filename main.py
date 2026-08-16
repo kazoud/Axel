@@ -20,6 +20,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.SimulationButton.clicked.connect(self.runSimulation)
 
             self.ui.spikeRateAdaptation.clicked.connect(self.ToggleSpikeRateAdaptation)
+            self.ui.synapticConductance.clicked.connect(self.ToggleSynapticConductance)
 
     @QtCore.Slot()
     def IncrementStackedWidget(self):
@@ -33,6 +34,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.potassiumConductanceLabel.setEnabled(checked)
         self.ui.potassiumTau.setEnabled(checked)
         self.ui.potassiumTauLabel.setEnabled(checked)
+
+    @QtCore.Slot()
+    def ToggleSynapticConductance(self):
+        checked = self.ui.synapticConductance.isChecked()
+        self.ui.synapseVrest.setEnabled(checked)
+        self.ui.synapseVrestLabel.setEnabled(checked)
+        self.ui.rmgSyn.setEnabled(checked)
+        self.ui.rmgSynLabel.setEnabled(checked)
 
     @QtCore.Slot()
     def runSimulation(self):

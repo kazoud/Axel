@@ -16,6 +16,9 @@ class Inputs:
     potassiumVrest:float
     potassiumConductanceIncrement:float
     potassiumTau:float
+    synapticConductance:bool
+    rmgSyn:float
+    synpaseVrest:float
 
 @dataclass
 class PlotElement:
@@ -53,7 +56,10 @@ class SimulationController():
                                                                     inputs.spikeRateAdaptation,
                                                                     inputs.potassiumVrest,
                                                                     inputs.potassiumConductanceIncrement,
-                                                                    inputs.potassiumTau)
+                                                                    inputs.potassiumTau,
+                                                                    inputs.synapticConductance,
+                                                                    inputs.rmgSyn,
+                                                                    inputs.synpaseVrest)
 
         plotElements.append(PlotElement(xVoltage, yVoltage, voltageXlabel, voltageYlabel, voltageTitle))
         plotElements.append(PlotElement(timeValues, currentValues, currentXlabel, currentYLabel, currentTitle))
@@ -78,6 +84,10 @@ class SimulationController():
         potassiumVrest = widget.potassiumVrest.value()
         potassiumConductanceIncrement = widget.potassiumConductance.value()
         potassiumTau = widget.potassiumTau.value()
+        synapticConductance = widget.synapticConductance.isChecked()
+        rmgSyn = widget.rmgSyn.value()
+        synapseVrest = widget.synapseVrest.value()
 
-        return Inputs(vRest,vThreshold, vReset, r, tau, duration, current, timeStep, spikeRateAdaptation, potassiumVrest, potassiumConductanceIncrement, potassiumTau)
+        return Inputs(vRest,vThreshold, vReset, r, tau, duration, current, timeStep, spikeRateAdaptation, potassiumVrest, 
+                      potassiumConductanceIncrement, potassiumTau, synapticConductance, rmgSyn, synapseVrest)
 

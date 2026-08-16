@@ -17,10 +17,10 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>20</y>
-      <width>651</width>
-      <height>481</height>
+      <x>20</x>
+      <y>-10</y>
+      <width>731</width>
+      <height>511</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -351,7 +351,7 @@
        <rect>
         <x>200</x>
         <y>230</y>
-        <width>221</width>
+        <width>191</width>
         <height>31</height>
        </rect>
       </property>
@@ -368,8 +368,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>380</x>
-        <y>30</y>
+        <x>470</x>
+        <y>20</y>
         <width>151</width>
         <height>41</height>
        </rect>
@@ -387,8 +387,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>80</y>
+        <x>430</x>
+        <y>70</y>
         <width>191</width>
         <height>21</height>
        </rect>
@@ -403,8 +403,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>80</y>
+        <x>630</x>
+        <y>70</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -425,8 +425,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>360</x>
-        <y>110</y>
+        <x>450</x>
+        <y>100</y>
         <width>171</width>
         <height>21</height>
        </rect>
@@ -441,8 +441,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>110</y>
+        <x>630</x>
+        <y>100</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -463,8 +463,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>140</y>
+        <x>400</x>
+        <y>130</y>
         <width>221</width>
         <height>21</height>
        </rect>
@@ -479,8 +479,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>140</y>
+        <x>630</x>
+        <y>130</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -496,6 +496,107 @@
       </property>
       <property name="value">
        <double>100.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="synapticConductance">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>190</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Synaptic conductance</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="synapseVrestLabel">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>240</y>
+        <width>161</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Synapse equilibrium (mV):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="synapseVrest">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>240</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>-200.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>200.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>0.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="rmgSyn">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>270</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="minimum">
+       <double>-200.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>0.500000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="rmgSynLabel">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>270</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;r&lt;span style=&quot; vertical-align:sub;&quot;&gt;m&lt;/span&gt;g&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
