@@ -5,6 +5,7 @@ from application import Ui_MainWindow
 
 from SimulationController import SimulationController, PlotElement
 
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -15,16 +16,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.__initializeConnections()
 
     def __initializeConnections(self):
-            self.ui.NeuronModels.clicked.connect(self.IncrementStackedWidget)
-            self.ui.LIF.clicked.connect(self.IncrementStackedWidget)
+            self.ui.NeuronModelsButton.clicked.connect(self.IncrementStackedWidget)
+            self.ui.LIFButton.clicked.connect(self.IncrementStackedWidget)
             self.ui.SimulationButton.clicked.connect(self.runSimulation)
 
-            self.ui.spikeRateAdaptation.clicked.connect(self.ToggleSpikeRateAdaptation)
-            self.ui.synapticConductance.clicked.connect(self.ToggleSynapticConductance)
+            self.ui.NeuralNetworksButton.clicked.connect(self.NeuralNetworksPage)
+            self.ui.RecurrentNeuralNetworksButton.clicked.connect(self.IncrementStackedWidget)
+
+            self.ui.spikeRateAdaptationCheckBox.clicked.connect(self.ToggleSpikeRateAdaptation)
+            self.ui.synapticConductanceCheckBox.clicked.connect(self.ToggleSynapticConductance)
 
     @QtCore.Slot()
     def IncrementStackedWidget(self):
         self.ui.stackedWidget.setCurrentIndex(self.ui.stackedWidget.currentIndex()+1)
+    def NeuralNetworksPage(self):
+        self.ui.stackedWidget.setCurrentIndex(3)
     @QtCore.Slot()
     def ToggleSpikeRateAdaptation(self):
         checked = self.ui.spikeRateAdaptation.isChecked()
