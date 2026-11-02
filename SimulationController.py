@@ -93,7 +93,6 @@ class SimulationController():
         pcaPlottingData = [(time, m), (time,pca)]
 
         plotElements.append(PlotElement(neuralPlottingData, "Activation", "Time", "Total neural activity over time"))
-        plotElements.append(PlotElement(pcaPlottingData, "Activation", "Time", "pca"))
 
         return plotElements
 

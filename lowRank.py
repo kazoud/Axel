@@ -30,6 +30,6 @@ def simulate(N: int, g: float, meanOfM: float, standardDeviationOfM: float, mean
         for j in range(N):
             states[j].append(current[j])
 
-    return states, time, m/np.linalg.norm(m)
+    return states, time
 
 
