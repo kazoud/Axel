@@ -34,6 +34,15 @@ def solve(x0: float, f: Callable[[float], float]) -> tuple[list[float],list[floa
         values[1].append(rungeKuttaFloat(values[1][-1], stepSize,f))
     return values
 
+def getRandomVector(size: int, mean: float, std: float):
+    return np.random.normal(loc = mean, scale = std, size = (size))
+
+def getRandomMatrix(size : int):
+    return np.random.normal(loc = 0., scale = 1/np.sqrt(size), size = (size, size))
+
+def getStructuredMatrix(m: np.array, n: np.array, size : int) -> np.ndarray:
+    return (1/size)*np.outer(m,n)
+
 if __name__ == "__main__":
     fig, ax = plt.subplots()
 

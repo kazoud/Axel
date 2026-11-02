@@ -299,7 +299,7 @@
        <double>500.000000000000000</double>
       </property>
      </widget>
-     <widget class="QPushButton" name="SimulationButton">
+     <widget class="QPushButton" name="LIFSimulationButton">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -619,7 +619,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="NeuralNetworksPage">
-     <widget class="QPushButton" name="RecurrentNeuralNetworksButton">
+     <widget class="QPushButton" name="LowRankRnnsButton">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -634,11 +634,261 @@
        </font>
       </property>
       <property name="text">
-       <string>Recurrent Neural Networks</string>
+       <string>Low-Rank Rnns</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="RecurrentNeuralNetworksPage"/>
+    <widget class="QWidget" name="LowRankRnnsPage">
+     <widget class="QLabel" name="UnitsInTheNetworkLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Units in the network (N):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="UnitsInTheNetwork">
+      <property name="geometry">
+       <rect>
+        <x>172</x>
+        <y>46</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>100000.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>100.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="MeanOfMLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>120</y>
+        <width>241</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Mean of m (right-connectivity vector):</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="StandardDeviationOfMLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>331</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Standard deviation of m (right-connectivity vector):</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="gLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>221</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>g (Strength of random connectivity):</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="g">
+      <property name="geometry">
+       <rect>
+        <x>242</x>
+        <y>87</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>2</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+      <property name="value">
+       <double>1.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="MeanOfM">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>130</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>2</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+      <property name="value">
+       <double>0.800000000000000</double>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="StandardDeviationOfM">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>150</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>2</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+      <property name="value">
+       <double>1.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="MeanOfN">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>200</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>2</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+      <property name="value">
+       <double>0.500000000000000</double>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="StandardDeviationOfN">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>220</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>2</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+      <property name="value">
+       <double>1.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="MeanOfNLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>190</y>
+        <width>241</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Mean of n (left-connectivity vector):</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="StandardDeviationOfNLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>220</y>
+        <width>331</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Standard deviation of n (left-connectivity vector):</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="LowRankRnnsSimulationButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>290</y>
+        <width>201</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Simulate neural activity</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

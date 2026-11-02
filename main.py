@@ -16,12 +16,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.__initializeConnections()
 
     def __initializeConnections(self):
-            self.ui.NeuronModelsButton.clicked.connect(self.IncrementStackedWidget)
+            self.ui.NeuronModelsButton.clicked.connect(self.IncrementStackedWidget) #def gonna need refactoring at some point
             self.ui.LIFButton.clicked.connect(self.IncrementStackedWidget)
-            self.ui.SimulationButton.clicked.connect(self.runSimulation)
+            self.ui.LIFSimulationButton.clicked.connect(self.runSimulation)
+            self.ui.LowRankRnnsSimulationButton.clicked.connect(self.runSimulation)
 
             self.ui.NeuralNetworksButton.clicked.connect(self.NeuralNetworksPage)
-            self.ui.RecurrentNeuralNetworksButton.clicked.connect(self.IncrementStackedWidget)
+            self.ui.LowRankRnnsButton.clicked.connect(self.IncrementStackedWidget)
 
             self.ui.spikeRateAdaptationCheckBox.clicked.connect(self.ToggleSpikeRateAdaptation)
             self.ui.synapticConductanceCheckBox.clicked.connect(self.ToggleSynapticConductance)
@@ -55,24 +56,29 @@ class MainWindow(QtWidgets.QMainWindow):
             case 2: #LIF
                 plotData = self.simulationController.lifSequence(self.ui)
                 self.__plotData(plotData)
+            case 4: #Low-rank rnns
+                plotData = self.simulationController.lowRankRnnsSequence(self.ui)
+                self.__plotData(plotData)
+
                 
     def __plotData(self, data:list[PlotElement]):
         plotWindows = []
         for plotElement in data:
-            plotWindows.append(PlotWindow(plotElement.xData, plotElement.yData, plotElement.xLabel, plotElement.yLabel, plotElement.title))
+            plotWindows.append(PlotWindow(plotElement.data, plotElement.xLabel, plotElement.yLabel, plotElement.title))
         self.plotWindows = plotWindows
         for plotWindow in plotWindows:
             plotWindow.show()
 
 class PlotWindow(QtWidgets.QMainWindow):
-    def __init__(self,x: list[float], y:list[float], xlabel: str, ylabel: str, title: str):
+    def __init__(self,data: list[tuple[list[float],list[float]]], xlabel: str, ylabel: str, title: str):
         super().__init__()
         self.plotWidget = pyqtgraph.PlotWidget()
         self.setCentralWidget(self.plotWidget)
         plotItem = self.plotWidget.getPlotItem()
         plotItem.setLabels(bottom = xlabel, left = ylabel)
         plotItem.setTitle(title)
-        plotItem.plot(x,y)
+        for tuple in data:
+            plotItem.plot(tuple[0],tuple[1])
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
