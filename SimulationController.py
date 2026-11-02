@@ -84,13 +84,10 @@ class SimulationController():
         plotElements = []
 
         inputs = self.__extractLowRankRnnsInputs(widget)
-        neuralData, time, m = lowRank.simulate(N = inputs.numberOfUnits,g=inputs.g, meanOfM=inputs.meanOfM, standardDeviationOfM=inputs.StandardDeviationOfM, meanOfN=inputs.meanOfN, standardDeviationOfN=inputs.StandardDeviationOfN )
+        neuralData, time = lowRank.simulate(N = inputs.numberOfUnits,g=inputs.g, meanOfM=inputs.meanOfM, standardDeviationOfM=inputs.StandardDeviationOfM, meanOfN=inputs.meanOfN, standardDeviationOfN=inputs.StandardDeviationOfN )
         neuralPlottingData = []
         for i in range(len(neuralData)):
             neuralPlottingData.append((time, neuralData[i]))
-
-        pca = lowRank.pca(neuralData)
-        pcaPlottingData = [(time, m), (time,pca)]
 
         plotElements.append(PlotElement(neuralPlottingData, "Activation", "Time", "Total neural activity over time"))
 
