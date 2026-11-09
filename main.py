@@ -34,7 +34,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(3)
     @QtCore.Slot()
     def ToggleSpikeRateAdaptation(self):
-        checked = self.ui.spikeRateAdaptation.isChecked()
+        checked = self.ui.spikeRateAdaptationCheckBox.isChecked()
         self.ui.potassiumVrest.setEnabled(checked)
         self.ui.potassiumVrestLabel.setEnabled(checked)
         self.ui.potassiumConductance.setEnabled(checked)
@@ -44,7 +44,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.Slot()
     def ToggleSynapticConductance(self):
-        checked = self.ui.synapticConductance.isChecked()
+        checked = self.ui.synapticConductanceCheckBox.isChecked()
         self.ui.synapseVrest.setEnabled(checked)
         self.ui.synapseVrestLabel.setEnabled(checked)
         self.ui.rmgSyn.setEnabled(checked)
@@ -59,29 +59,33 @@ class MainWindow(QtWidgets.QMainWindow):
             case 4: #Low-rank rnns
                 if activityAlongM:
                     plotData = self.simulationController.activityAlongMSequence(self.ui)
-                    self.__plotData(plotData)
+                    self.__plotData(plotData, True)
                 else:
                     plotData = self.simulationController.lowRankRnnsSequence(self.ui)
                     self.__plotData(plotData)
                 
-    def __plotData(self, data:list[PlotElement]):
+    def __plotData(self, data:list[PlotElement], dots: bool = False):
         plotWindows = []
         for plotElement in data:
-            plotWindows.append(PlotWindow(plotElement.data, plotElement.xLabel, plotElement.yLabel, plotElement.title))
+            plotWindows.append(PlotWindow(plotElement.data, plotElement.xLabel, plotElement.yLabel, plotElement.title, dots))
         self.plotWindows = plotWindows
         for plotWindow in plotWindows:
             plotWindow.show()
 
 class PlotWindow(QtWidgets.QMainWindow):
-    def __init__(self,data: list[tuple[list[float],list[float]]], xlabel: str, ylabel: str, title: str):
+    def __init__(self,data: list[tuple[list[float],list[float]]], xlabel: str, ylabel: str, title: str, dots: bool):
         super().__init__()
         self.plotWidget = pyqtgraph.PlotWidget()
         self.setCentralWidget(self.plotWidget)
         plotItem = self.plotWidget.getPlotItem()
         plotItem.setLabels(bottom = xlabel, left = ylabel)
         plotItem.setTitle(title)
-        for tuple in data:
-            plotItem.plot(tuple[0],tuple[1],pen=None, symbol='o')
+        if dots:
+            for tuple in data:
+                plotItem.plot(tuple[0],tuple[1],pen=None, symbol='o')
+        else:
+            for tuple in data:
+                plotItem.plot(tuple[0],tuple[1])
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
