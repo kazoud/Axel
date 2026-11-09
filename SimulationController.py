@@ -89,9 +89,21 @@ class SimulationController():
         for i in range(len(neuralData)):
             neuralPlottingData.append((time, neuralData[i]))
 
-        plotElements.append(PlotElement(neuralPlottingData, "Activation", "Time", "Total neural activity over time"))
+        plotElements.append(PlotElement(neuralPlottingData, "Time", "Activation", "Total neural activity over time"))
 
         return plotElements
+
+    def activityAlongMSequence(self, widget: QtWidgets.QWidget)->list[PlotElement]:
+        inputs = self.__extractLowRankRnnsInputs(widget)
+        kappaValues, gValues = lowRank.activityAlongM(N=inputs.numberOfUnits, 
+                               meanOfM=inputs.meanOfM, 
+                               standardDeviationOfM=inputs.StandardDeviationOfM, 
+                               meanOfN=inputs.meanOfN, 
+                               standardDeviationOfN=inputs.StandardDeviationOfN)
+        plotElements = [PlotElement([(gValues,kappaValues)], "g","kappa", "Neural activity along m")]
+
+        return plotElements
+
 
     def __extractLIFInputs(self,widget : QtWidgets.QWidget)-> LIFInputs:
         vRest = widget.vRest.value()

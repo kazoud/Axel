@@ -5,7 +5,6 @@ from application import Ui_MainWindow
 
 from SimulationController import SimulationController, PlotElement
 
-
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -20,6 +19,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.LIFButton.clicked.connect(self.IncrementStackedWidget)
             self.ui.LIFSimulationButton.clicked.connect(self.runSimulation)
             self.ui.LowRankRnnsSimulationButton.clicked.connect(self.runSimulation)
+            self.ui.activityAlongMButton.clicked.connect(lambda: self.runSimulation(True))
 
             self.ui.NeuralNetworksButton.clicked.connect(self.NeuralNetworksPage)
             self.ui.LowRankRnnsButton.clicked.connect(self.IncrementStackedWidget)
@@ -51,15 +51,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.rmgSynLabel.setEnabled(checked)
 
     @QtCore.Slot()
-    def runSimulation(self):
+    def runSimulation(self, activityAlongM: bool = False):
         match self.ui.stackedWidget.currentIndex():
             case 2: #LIF
                 plotData = self.simulationController.lifSequence(self.ui)
                 self.__plotData(plotData)
             case 4: #Low-rank rnns
-                plotData = self.simulationController.lowRankRnnsSequence(self.ui)
-                self.__plotData(plotData)
-
+                if activityAlongM:
+                    plotData = self.simulationController.activityAlongMSequence(self.ui)
+                    self.__plotData(plotData)
+                else:
+                    plotData = self.simulationController.lowRankRnnsSequence(self.ui)
+                    self.__plotData(plotData)
                 
     def __plotData(self, data:list[PlotElement]):
         plotWindows = []
@@ -78,7 +81,7 @@ class PlotWindow(QtWidgets.QMainWindow):
         plotItem.setLabels(bottom = xlabel, left = ylabel)
         plotItem.setTitle(title)
         for tuple in data:
-            plotItem.plot(tuple[0],tuple[1])
+            plotItem.plot(tuple[0],tuple[1],pen=None, symbol='o')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])

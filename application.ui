@@ -760,7 +760,7 @@
        <double>0.100000000000000</double>
       </property>
       <property name="value">
-       <double>0.800000000000000</double>
+       <double>1.100000000000000</double>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="StandardDeviationOfM">
@@ -810,7 +810,7 @@
        <double>0.100000000000000</double>
       </property>
       <property name="value">
-       <double>0.500000000000000</double>
+       <double>2.000000000000000</double>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="StandardDeviationOfN">
@@ -880,6 +880,30 @@
       </property>
       <property name="text">
        <string>Simulate neural activity</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="activityAlongMButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>380</y>
+        <width>201</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>19</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Activity along m</string>
       </property>
       <property name="iconSize">
        <size>

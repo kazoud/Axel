@@ -23,6 +23,13 @@ def rungeKutta(state:np.ndarray[float], stepSize:float, models: np.ndarray[Calla
     k4 = stepSize*derivatives(state + k3)
     return state + (k1+2*k2+2*k3+k4)/6
 
+def rungeKuttaVectorized(state:np.ndarray[float], stepSize:float, f)->list[float]:
+    k1 = stepSize*f(state)
+    k2 = stepSize*f(state + 0.5*k1)
+    k3 = stepSize*f(state + 0.5*k2)
+    k4 = stepSize*f(state + k3)
+    return state + (k1+2*k2+2*k3+k4)/6
+
 def solve(x0: float, f: Callable[[float], float]) -> tuple[list[float],list[float]]:
     steps = 100
     stepSize = 1e-1

@@ -1,35 +1,74 @@
 import numerical
 import numpy as np
-import scipy
 
 def simulate(N: int, g: float, meanOfM: float, standardDeviationOfM: float, meanOfN: float, standardDeviationOfN: float):
     m = numerical.getRandomVector(N, meanOfM, standardDeviationOfM)
     n = numerical.getRandomVector(N, meanOfN, standardDeviationOfN)
+    return simulateWithFixedConnectivity(N, m, n, g)
+
+def simulateWithFixedConnectivity(N: int, m:np.array, n:np.array, g:float, initialValue: float):
     structured = numerical.getStructuredMatrix(m,n,N)
     chaotic = g * numerical.getRandomMatrix(N)
     connectivity = chaotic + structured
-    phi = lambda x : np.tanh(x)
 
-    equations = []
-    for i in range(N):
-        equation = lambda state, i=i: -state[i] + sum(
-                                                        (connectivity[i][j])*phi(state[j])
-                                                        for j in range(N)
-                                                        )
-        equations.append(equation)
-    models = np.array(equations)
-
+    def rnn(state):
+        return -state + connectivity @ np.tanh(state)
+    
     steps = 100
     stepSize = 0.1
     time = [0]
-    states = [[1] for i in range(N)]
-    current = np.array([1]*N)
+    states = np.empty((N, steps))
+    states[:,0] = initialValue
+    current = np.full(N, initialValue)
     for i in range(1,steps):
-        current = numerical.rungeKutta(state = current, stepSize=stepSize, models =models)
+        current = numerical.rungeKuttaVectorized(state = current, stepSize=stepSize, f =rnn)
         time.append(time[-1] + stepSize)
-        for j in range(N):
-            states[j].append(current[j])
+        states[:,i] = current
 
-    return states, time
+    return states.tolist(), time
 
+def getGValuesForActivityAlongM(start: float, end:float, points: int):
+    return np.linspace(start=start, stop=end, num = points)
 
+def activityAlongM(N:int, meanOfM:float, standardDeviationOfM:float, meanOfN:float, standardDeviationOfN:float):
+    gValues = getGValuesForActivityAlongM(start = 0, end = 4, points = 20).tolist()
+    m = numerical.getRandomVector(N, meanOfM, standardDeviationOfM)
+    n = numerical.getRandomVector(N, meanOfN, standardDeviationOfN)
+
+    initialValue = 1.0
+    plottingData = []
+    print("Computing activity along m for positive initial conditions:")
+    print("Computing neural activity for different values of g:")
+    for g in gValues:
+        print("g = " + str(g))
+        meanFiringRate = None
+        trials = 15
+        for i in range(trials):
+            neuralData, time = simulateWithFixedConnectivity(N, m, n, g, initialValue=initialValue)
+            steadyState = np.array(neuralData)[:, -10:]
+            firingRate = np.mean(steadyState, axis = 1)
+            if meanFiringRate is None:
+                meanFiringRate = firingRate
+            else:
+                meanFiringRate += firingRate
+        meanFiringRate /= trials
+        plottingData.append((1/N) * np.inner(n, meanFiringRate).item())
+
+    print("Computing activity along m for negative initial conditions:")
+    print("Computing neural activity for different values of g:")
+    for g in gValues:
+        print("g = " + str(g))
+        meanFiringRate = None
+        trials = 15
+        for i in range(trials):
+            neuralData, time = simulateWithFixedConnectivity(N, m, n, g, initialValue=-initialValue)
+            steadyState = np.array(neuralData)[:, -10:]
+            firingRate = np.mean(steadyState, axis = 1)
+            if meanFiringRate is None:
+                meanFiringRate = firingRate
+            else:
+                meanFiringRate += firingRate
+        meanFiringRate /= trials
+        plottingData.append((1/N) * np.inner(n, meanFiringRate).item())
+        
+    return plottingData, gValues * 2
