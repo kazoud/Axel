@@ -6,7 +6,7 @@ def simulate(N: int, g: float, meanOfM: float, standardDeviationOfM: float, mean
     n = numerical.getRandomVector(N, meanOfN, standardDeviationOfN)
     return simulateWithFixedConnectivity(N, m, n, g)
 
-def simulateWithFixedConnectivity(N: int, m:np.array, n:np.array, g:float, initialValue: float):
+def simulateWithFixedConnectivity(N: int, m:np.array, n:np.array, g:float, initialValue: float = 1.0):
     structured = numerical.getStructuredMatrix(m,n,N)
     chaotic = g * numerical.getRandomMatrix(N)
     connectivity = chaotic + structured
@@ -39,36 +39,26 @@ def activityAlongM(N:int, meanOfM:float, standardDeviationOfM:float, meanOfN:flo
     plottingData = []
     print("Computing activity along m for positive initial conditions:")
     print("Computing neural activity for different values of g:")
-    for g in gValues:
-        print("g = " + str(g))
-        meanFiringRate = None
-        trials = 15
-        for i in range(trials):
-            neuralData, time = simulateWithFixedConnectivity(N, m, n, g, initialValue=initialValue)
-            steadyState = np.array(neuralData)[:, -10:]
-            firingRate = np.mean(steadyState, axis = 1)
-            if meanFiringRate is None:
-                meanFiringRate = firingRate
-            else:
-                meanFiringRate += firingRate
-        meanFiringRate /= trials
-        plottingData.append((1/N) * np.inner(n, meanFiringRate).item())
+    __simulateTrials(gValues, N, m, n, initialValue, plottingData)
 
     print("Computing activity along m for negative initial conditions:")
     print("Computing neural activity for different values of g:")
-    for g in gValues:
-        print("g = " + str(g))
-        meanFiringRate = None
-        trials = 15
-        for i in range(trials):
-            neuralData, time = simulateWithFixedConnectivity(N, m, n, g, initialValue=-initialValue)
-            steadyState = np.array(neuralData)[:, -10:]
-            firingRate = np.mean(steadyState, axis = 1)
-            if meanFiringRate is None:
-                meanFiringRate = firingRate
-            else:
-                meanFiringRate += firingRate
-        meanFiringRate /= trials
-        plottingData.append((1/N) * np.inner(n, meanFiringRate).item())
+    __simulateTrials(gValues, N, m, n, -initialValue, plottingData)
         
     return plottingData, gValues * 2
+
+def __simulateTrials(gValues: list[float], N, m, n, initialValue, plottingData):
+    trials = 15
+    for g in gValues:
+            print("g = " + str(g))
+            meanFiringRate = None
+            for i in range(trials):
+                neuralData, time = simulateWithFixedConnectivity(N, m, n, g, initialValue=initialValue)
+                steadyState = np.array(neuralData)[:, -10:]
+                firingRate = np.mean(steadyState, axis = 1)
+                if meanFiringRate is None:
+                    meanFiringRate = firingRate
+                else:
+                    meanFiringRate += firingRate
+            meanFiringRate /= trials
+            plottingData.append((1/N) * np.inner(n, meanFiringRate).item())
