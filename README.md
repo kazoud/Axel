@@ -24,7 +24,7 @@ The figure illustrates the variation of neural activity along the structured con
 
 The results were reproduced using my own Python implementation of the model described in the original paper.
 
-The figure was obtained by simulating a network of size N = 5000, with means M<sub>m</sub> = 1.1, M<sub>n</sub> = 2.0, Σ<sub>m</sub> = Σ<sub>n</sub> = 1. 
+As in the original paper, the figure was obtained by simulating a network of size N = 5000, with means M<sub>m</sub> = 1.1, M<sub>n</sub> = 2.0, Σ<sub>m</sub> = Σ<sub>n</sub> = 1. 
 
 At the moment, the software sweeps through values of g from 0 to 4 on its own, the prompted g value is only for the simulation of neurons.
 
