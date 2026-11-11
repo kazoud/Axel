@@ -61,8 +61,13 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Generate application.py
 
+```bash
+pyside6-uic application.ui -o application.py
+```
+
+## Run
 ```bash
 python main.py
 ```
